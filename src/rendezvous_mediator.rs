@@ -680,7 +680,7 @@ impl RendezvousMediator {
 
         self.create_relay(
             rr.socket_addr.into(),
-            rr.relay_server,
+            self.get_relay_server(rr.relay_server),
             rr.uuid,
             server,
             rr.secure,

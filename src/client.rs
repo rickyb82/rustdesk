@@ -460,6 +460,15 @@ impl Client {
         } else {
             (peer, "", key, token)
         };
+        if !other_server.is_empty()
+            && other_server != PUBLIC_SERVER
+            && !base::config::builtin_server::allows(other_server)
+        {
+            bail!(
+                "This client connects only through {}",
+                base::config::builtin_server::HOST
+            );
+        }
         let (rendezvous_server, servers, contained) = if other_server.is_empty() {
             crate::get_rendezvous_server(1_000).await
         } else {

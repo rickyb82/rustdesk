@@ -6,7 +6,7 @@
 //! `--import-config` can point the client somewhere else.
 
 use super::keys;
-use hbb_common::config::{BUILTIN_SETTINGS, OVERWRITE_SETTINGS};
+use hbb_common::config::{BUILTIN_SETTINGS, OVERWRITE_SETTINGS, RENDEZVOUS_PORT};
 use std::sync::PoisonError;
 
 pub const HOST: &str = "emily.siriuslabs.it";
@@ -43,6 +43,16 @@ pub fn lock() {
     }
 }
 
+/// Whether a server named in a peer ID (`<id>@<server>`, from the connect box, a
+/// link or `--connect`) is this client's own; any other is refused.
+pub fn allows(server: &str) -> bool {
+    let (host, port) = match server.rsplit_once(':') {
+        Some((host, port)) => (host, Some(port)),
+        None => (server, None),
+    };
+    host.eq_ignore_ascii_case(HOST) && port.map_or(true, |p| p == RENDEZVOUS_PORT.to_string())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -57,6 +67,16 @@ mod tests {
         assert_eq!(Config::get_option(keys::OPTION_KEY), KEY);
         assert_eq!(Config::get_option(keys::OPTION_API_SERVER), "");
         assert!(Config::no_register_device());
+    }
+
+    #[test]
+    fn peer_ids_may_name_only_this_server() {
+        assert!(allows(HOST));
+        assert!(allows("EMILY.siriuslabs.it:21116"));
+        assert!(!allows("rs-ny.rustdesk.com"));
+        assert!(!allows("emily.siriuslabs.it:1234"));
+        assert!(!allows("emily.siriuslabs.it.attacker.example"));
+        assert!(!allows(""));
     }
 
     // The hbb_common fallbacks come from .github/sirius/hbb_common.patch; a
