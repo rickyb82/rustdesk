@@ -26,11 +26,14 @@ Il nome e l'aspetto restano quelli di RustDesk; cambia solo il server.
 
 ## Costruire l'installer
 
-1. Nella scheda **Actions** del repository abilita i workflow (una volta sola).
-2. In *Settings → General → Default branch* scegli `claude/client-server-sirius`:
-   GitHub mostra i workflow manuali solo se stanno nel ramo predefinito.
-3. *Actions → Sirius Windows x64 → Run workflow*. La prima volta dura circa
-   1–2 ore (vcpkg), poi molto meno grazie alla cache.
+1. Nella scheda **Actions** del repository abilita i workflow (una volta sola, dal browser
+   di un computer, con l'account proprietario del repository).
+2. Avvia la build in uno dei due modi:
+   - pubblica un tag che inizia con `sirius-` su questo ramo, per esempio
+     `git tag sirius-1.5.0-1 && git push origin sirius-1.5.0-1`;
+   - oppure rendi `claude/client-server-sirius` il ramo predefinito (*Settings → General →
+     Default branch*) e usa *Actions → Sirius Windows x64 → Run workflow*.
+3. La prima volta dura circa 1–2 ore (vcpkg), poi molto meno grazie alla cache.
 4. Il risultato è l'artifact `rustdesk-1.5.0-sirius-windows-x86_64`: l'exe, l'MSI e
    `SHA256SUMS`. Con *release-tag* (per esempio `1.5.0-sirius`) viene pubblicata anche una
    prerelease.

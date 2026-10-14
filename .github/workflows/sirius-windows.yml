@@ -6,6 +6,11 @@
 name: Sirius Windows x64
 
 on:
+  # Pushing a tag such as sirius-1.5.0-1 also starts it: no need for this branch to be the
+  # default one (the "sirius-" prefix matches none of the upstream release tag filters).
+  push:
+    tags:
+      - "sirius-*"
   workflow_dispatch:
     inputs:
       build-msi:
@@ -307,13 +312,13 @@ jobs:
           mv ./target/release/rustdesk-portable-packer.exe ./SignOutput/rustdesk-${{ env.VERSION }}-sirius-x86_64.exe
 
       - name: Add MSBuild to PATH
-        if: ${{ inputs.build-msi }}
+        if: ${{ inputs.build-msi || github.event_name == 'push' }}
         uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2
         with:
           msbuild-architecture: x86
 
       - name: Build msi
-        if: ${{ inputs.build-msi }}
+        if: ${{ inputs.build-msi || github.event_name == 'push' }}
         run: |
           pushd ./res/msi
           python preprocess.py --arp -d ../../rustdesk
