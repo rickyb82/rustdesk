@@ -1,0 +1,2 @@
+# The patch stays LF on every runner: an LF patch applies to LF and CRLF checkouts alike.
+*.patch -text

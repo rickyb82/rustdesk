@@ -1,9 +1,7 @@
 name: Flutter Nightly Build
 
+# Fork: no nightly schedule (it would publish stock builds); run by hand if ever needed.
 on:
-  schedule:
-    # schedule build every night
-    - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:

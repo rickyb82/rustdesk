@@ -10,9 +10,8 @@ name: Update webpki-roots
 # workflows (GitHub limitation). Close and reopen the PR, or push to its
 # branch, to run CI on it.
 
+# Fork: no weekly schedule; run by hand if ever needed.
 on:
-  schedule:
-    - cron: "0 3 * * 1"
   workflow_dispatch:
 
 # A manual dispatch overlapping the weekly run would race it force-pushing

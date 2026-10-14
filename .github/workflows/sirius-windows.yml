@@ -187,9 +187,14 @@ jobs:
       - uses: Swatinem/rust-cache@e18b497796c12c097a38f9edb9d0641fb99eee32 # v2
         with:
           prefix-key: windows-2022
+          # A first build that fails later still keeps the compiled dependencies.
+          cache-on-failure: true
 
-      - name: Cache vcpkg binary packages
-        uses: actions/cache@6f8efc29b200d32929f49075959781ed54ec270c # v3
+      # Restored here and saved right after the vcpkg install, so a failure in a later step
+      # does not throw away an hour of vcpkg builds.
+      - name: Restore vcpkg binary packages
+        id: vcpkg-cache
+        uses: actions/cache/restore@6f8efc29b200d32929f49075959781ed54ec270c # v3
         with:
           path: C:\vcpkg-bincache
           key: vcpkg-x64-windows-static-${{ env.VCPKG_COMMIT_ID }}-${{ hashFiles('vcpkg.json', 'res/vcpkg/**', 'res/vcpkg-triplets/**') }}
@@ -221,6 +226,13 @@ jobs:
             exit 1
           fi
           head -n 100 "${VCPKG_ROOT}/buildtrees/ffmpeg/build-x64-windows-static-rel-out.log" || true
+
+      - name: Save vcpkg binary packages
+        if: ${{ steps.vcpkg-cache.outputs.cache-hit != 'true' }}
+        uses: actions/cache/save@6f8efc29b200d32929f49075959781ed54ec270c # v3
+        with:
+          path: C:\vcpkg-bincache
+          key: ${{ steps.vcpkg-cache.outputs.cache-primary-key }}
 
       - name: Build rustdesk
         run: |
