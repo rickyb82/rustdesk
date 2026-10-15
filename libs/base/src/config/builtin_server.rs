@@ -10,7 +10,7 @@ use hbb_common::config::{BUILTIN_SETTINGS, OVERWRITE_SETTINGS, RENDEZVOUS_PORT};
 use std::sync::PoisonError;
 
 pub const HOST: &str = "emily.siriuslabs.it";
-pub const KEY: &str = "0hCCPq2v8kqOfZT1HvtTwce6Rhb3x29WqksWmT1WL60=";
+pub const KEY: &str = "Aierl6GZcWifHZz26BoE2Wi1Jsr08x1NG8FyvfAJBFg=";
 
 const OVERRIDE: [(&str, &str); 4] = [
     (keys::OPTION_CUSTOM_RENDEZVOUS_SERVER, HOST),

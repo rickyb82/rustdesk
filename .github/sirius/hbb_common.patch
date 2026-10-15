@@ -18,7 +18,7 @@ index 6fe1004..dd61488 100644
 -pub const RENDEZVOUS_SERVERS: &[&str] = &["rs-ny.rustdesk.com"];
 -pub const RS_PUB_KEY: &str = "OeVuKk5nlHiXp+APNn0Y3pC1Iwpwn44JGqrQCsWqmBw=";
 +pub const RENDEZVOUS_SERVERS: &[&str] = &["emily.siriuslabs.it"];
-+pub const RS_PUB_KEY: &str = "0hCCPq2v8kqOfZT1HvtTwce6Rhb3x29WqksWmT1WL60=";
++pub const RS_PUB_KEY: &str = "Aierl6GZcWifHZz26BoE2Wi1Jsr08x1NG8FyvfAJBFg=";
  
  pub const RENDEZVOUS_PORT: i32 = 21116;
  pub const RELAY_PORT: i32 = 21117;
